@@ -1,23 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useEffect, useState} from 'react';
+import routes from './routing/routes';
+import useEventListener from './hooks/useEventListener';
+import './App.scss';
 
-function App() {
+const App = (props) => {
+  const [backgroundColor, setBackgroundColor] = useState('bg-light');
+  const [navExpanded, setNavExpanded] = useState(false);
+
+  const handleToggle = (e) => {
+    setNavExpanded(!navExpanded);
+  }
+  useEffect(()=>{
+    setBackgroundColor('bg-trans');
+
+  }, [navExpanded])  
+
+  const listenScrollEvent = e => {
+      if (window.scrollY > 1 || navExpanded === true) {
+          setBackgroundColor('bg-dark');
+      } else {
+          setBackgroundColor('bg-trans');
+      }
+  }    
+
+  useEventListener('scroll', listenScrollEvent)
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {/* <Nav backgroundColor={backgroundColor} handleToggle={handleToggle} setBackground={setBackgroundColor} navExpanded={navExpanded}/> */}
+      {routes}
     </div>
   );
 }
